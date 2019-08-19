@@ -1,0 +1,62 @@
+# 数据库连接
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 1
+      min-idle: 1
+      max-active: 100
+      test-on-borrow: true
+      stat-view-servlet:
+        allow: true
+
+# Redis配置
+  redis:
+    host: 192.168.0.101
+    port: 6379
+    password: redis@2019
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+
+  # 热部署
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+
+# Mybatis 扫描
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.starterapp.POJO
+
+# mapper
+mapper:
+  not-empty: false
+  identity: MYSQL
+  mappers: com.example.starterapp.utils.MyMapper
+
+# pageHelper
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+# 控制台输出sql
+logging:
+  level:
+    com:
+      example:
+        starterapp:
+          mapper: debug
+
+server:
+  port: 8090
