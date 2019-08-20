@@ -8,6 +8,8 @@ import com.example.starterapp.utils.DESUtil;
 import com.example.starterapp.utils.TokenCacheUtil;
 import com.example.starterapp.vo.LoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
@@ -22,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     public User checkUserIsExistByName(String username) {
@@ -62,6 +67,8 @@ public class UserServiceImpl implements UserService {
         LoginVo vo = new LoginVo();
         vo.setUsername(user.getUsername());
         vo.setToken(uniqueToken);
+        redisTemplate.opsForHash().put("user" + user.getId(),"username",user.getUsername());
+        redisTemplate.opsForHash().put("user" + user.getId(),"token",uniqueToken);
         return  vo;
     }
 }
