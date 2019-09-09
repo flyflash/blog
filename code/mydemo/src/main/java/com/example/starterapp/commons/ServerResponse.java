@@ -7,22 +7,29 @@ import java.util.Date;
 import com.example.starterapp.enums.ResponseCode;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 
 @Getter
 @SuppressWarnings("deprecation")
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 //注解中的属性：保证序列化json的时候，如果是null对象，key也会消失
+@ApiModel(value = "响应类")
 public class ServerResponse<T> implements Serializable {
 
 	private static final long serialVersionUID = -6064832354890786471L;
 
+	@ApiModelProperty(value = "响应状态码")
 	private int code;
-	
+
+	@ApiModelProperty(value = "错误信息")
 	private String msg;
-	
+
+	@ApiModelProperty(value = "响应内容")
 	private T data;
-	
+
+	@ApiModelProperty(value = "系统时间")
 	private String serverTime;
 	
 	private ServerResponse(int code) {

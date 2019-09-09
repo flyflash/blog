@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration>
+
+    <!-- 配置控制台输出 -->
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                [%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n
+            </pattern>
+        </layout>
+    </appender>
+
+    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>
+                [%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n
+            </pattern>
+        </encoder>
+        <!--滚动策略 此处为: 按时间滚动-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <!-- <fileNamePattern>/Documents/logs/perfume-box/info.%d.log</fileNamePattern> -->
+           	<fileNamePattern>/var/log/MyDemo/info.%d.log</fileNamePattern>
+        </rollingPolicy>
+        <!-- 过滤 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>
+                [%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n
+            </pattern>
+        </encoder>
+        <!--滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <!-- <fileNamePattern>/Documents/logs/perfume-box/error.info.%d.log</fileNamePattern> -->
+            <fileNamePattern>/var/log/MyDemo/error.info.%d.log</fileNamePattern>
+        </rollingPolicy>
+        <!-- 根据范围过滤 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+
+    <root level="info">
+        <appender-ref ref="consoleLog" />
+        <appender-ref ref="fileInfoLog" />
+        <appender-ref ref="fileErrorLog" />
+    </root>
+
+</configuration>

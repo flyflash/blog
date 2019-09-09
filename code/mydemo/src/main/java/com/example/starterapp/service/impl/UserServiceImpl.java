@@ -8,7 +8,6 @@ import com.example.starterapp.utils.DESUtil;
 import com.example.starterapp.utils.TokenCacheUtil;
 import com.example.starterapp.vo.LoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -36,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.selectOneByExample(userExample);
 
-        return user == null ? null : user;
+        return user;
     }
 
     @Override
@@ -47,7 +46,7 @@ public class UserServiceImpl implements UserService {
         criteria.andEqualTo("password", user.getPassword());
 
         User u = userMapper.selectOneByExample(userExample);
-        return u == null ? false : true;
+        return u != null;
     }
 
     @Override
@@ -56,7 +55,7 @@ public class UserServiceImpl implements UserService {
         Iterator<Map.Entry<String, User>> iterator = map.entrySet().iterator();
         while(iterator.hasNext()){
             Map.Entry<String, User> next = iterator.next();
-            if (next.getValue().getId() == user.getId()){
+            if (next.getValue().getId().equals(user.getId())){
                 TokenCacheUtil.delToken(Constant.CACHE_TOKEN_PREFIX + next.getKey());
             }
         }

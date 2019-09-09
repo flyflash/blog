@@ -6,6 +6,7 @@ import com.example.starterapp.enums.ResponseCode;
 import com.example.starterapp.exception.CustomException;
 import com.example.starterapp.service.UserService;
 import com.example.starterapp.vo.LoginVo;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,24 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/user")
+@Api(value = "测试API", tags = "用户API")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    @ApiOperation(value = "用户登录",
+                  notes = "用户登录返回用户名和token",
+                  response = ServerResponse.class,
+                  httpMethod = "POST")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "请求成功"),
+            @ApiResponse(code = 201, message = "请求失败"),
+            @ApiResponse(code = 2000, message = "请求参数为空", response = ServerResponse.class),
+            @ApiResponse(code = 3000, message = "用户名不存在", response = ServerResponse.class),
+            @ApiResponse(code = 3001, message = "用户名密码错误", response = ServerResponse.class),
+            @ApiResponse(code = 3002, message = "token加密错误", response = ServerResponse.class)
+    })
     @PostMapping("/login")
     public ServerResponse<LoginVo> login(@RequestBody User user){
 

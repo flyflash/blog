@@ -3,6 +3,8 @@ package com.example.starterapp.controller;
 import com.example.starterapp.commons.ServerResponse;
 import com.example.starterapp.enums.ResponseCode;
 import com.example.starterapp.exception.CustomException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,14 +20,12 @@ import java.io.IOException;
 @Slf4j
 @RestController
 @RequestMapping("/test")
+@Api(value = "测试", tags = "测试")
 public class TestController {
 
-	@RequestMapping("/test")
-	public ServerResponse<String> test(){
-		log.info("请求成功");
-		return ServerResponse.createBySuccessMessage("请求成功");
-	}
-
+	@ApiOperation(value = "文件上传",
+                  notes = "文件上传（图片）",
+				  response = ServerResponse.class)
 	@PostMapping("/importSql")
 	public ServerResponse<String> importSql(@RequestParam("file")MultipartFile file){
 
